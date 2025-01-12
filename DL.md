@@ -1,4 +1,4 @@
-# 深度学习基础
+# Preliminaries
 
 
 
@@ -377,15 +377,112 @@ a, a.item(), float(a), int(a)
 
 ### 读取数据集
 
+利用`pandas.read_csv`读取 csv 文件
 
+```python
+import pandas as pd
+
+data = pd.read_csv(data_file) # data_file是已有的 csv 文件
+print(data_file)
+
+'''
+  NumRooms Alley   Price
+0      NaN  Pave  127500
+1      2.0   NaN  106000
+2      4.0   NaN  178100
+3      NaN   NaN  140000
+'''
+```
 
 
 
 ### 处理缺失值
 
+- 插入法
+- 删除法（略）
 
+*基于上述的例子，我们考虑插入法：*
+
+1. 对于`inputs`中缺少的数值，我们用同一列的**均值**替换“NaN”项
+
+```python
+inputs, outputs = data.iloc[:, 0:2], data.iloc[:, 2]
+inputs = inputs.fillna(inputs.mean())
+print(inputs)
+
+'''
+	NumRooms  Alley
+0 		 3.0   Pave
+1 		 2.0    NaN
+2 		 4.0    NaN
+3 		 3.0    NaN
+'''
+```
+
+
+
+2. 对于`inputs`中的类别值或离散值，我们将“NaN”视为一个类别。
+
+   由于“巷子类型”（“Alley”）列只接受两 种类型的类别值“Pave”和“NaN”，pandas可以自动将此列转换为两列“Alley_Pave”和“Alley_nan”。巷子类型为“Pave”的行会将“Alley_Pave”的值设置为1，“Alley_nan”的值设置为0。缺少巷子类型的行会 将“Alley_Pave”和“Alley_nan”分别设置为0和1。
+
+```python
+import pandas
+
+inputs = pd.get_dummies(inputs, dummy_na=True) # dummy_na=True：当设置为 True 时，会为缺失值（NaN）创建一个额外的列
+print(inputs)
+
+'''
+	NumRooms Alley_Pave Alley_nan
+0 		 3.0 					1 				0
+1 		 2.0 					0 				1
+2 		 4.0 					0 				1
+3 		 3.0 					0 				1
+'''
+```
 
 
 
 ### 转换为张量格式
+
+`inputs`和`outputs`中的所有条目都是数值类型，它们可以转换为张量格式。当数据采用张量格式后，可以通过张量函数来进一步操作
+
+```python
+import torch
+
+x = torch.tensor(inputs.to_numpy(dtype=float))
+y = torch.tensor(output.to_numpy(dtype=float))
+x, y
+
+'''
+(tensor([[3., 1., 0.],
+[2., 0., 1.],
+[4., 0., 1.],
+[3., 0., 1.]], dtype=torch.float64),
+tensor([127500., 106000., 178100., 140000.], dtype=torch.float64))
+'''
+```
+
+
+
+## 线性代数
+
+
+
+## 微积分
+
+
+
+## 自动微分
+
+
+
+ ## 概率
+
+
+
+## 查阅文档
+
+
+
+
 
