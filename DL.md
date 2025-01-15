@@ -666,9 +666,45 @@ torch.norm(torch.ones((4, 9)))
 
 ## 自动微分
 
+```python
+import torch
 
+x = torch.arange(4.0)
+x.requires_grad_(Ture) # 表示将要为 x 计算梯度并储存其梯度值
 
+'''标量函数1的自动微分'''
+y = 2 * torch.dot(x, x) # 标量函数1
+y.backward() # 后向模式自动微分
+x.grad # 查看函数1的梯度值
+# 输出：tensor([ 0., 4., 8., 12.])
 
+x.grad.zero_() # 清空pytorch累积的梯度
+
+'''标量函数2的自动微分'''
+y = x.sum() # 标量函数2
+y.backward()
+x.grad # 输出：tensor([1., 1., 1., 1.])
+
+x.grad.zero_() # 清空pytorch累积的梯度
+
+'''非标量函数的自动微分'''
+y = x * x # 非标量函数
+y.sum().backward() 
+x.grad 
+# 输出：tensor([0., 2., 4., 6.])
+
+x.grad.zero_() # 清空pytorch累积的梯度
+
+'''分离计算的自动微分'''
+y = x * x
+u = y.detach() # 分离
+z = u * x
+z.sum().backward()
+x.grad == u
+# 输出：tensor([True, True, True, True])
+
+'''python控制流的自动微分'''
+```
 
 
 
