@@ -24,7 +24,7 @@
 - 本质是一个数组可能有多个维度 *( 具有一个轴的张量对应数学上的*向量*（vector）； 具有两个轴的张量对应数学上的*矩阵*（matrix）； 具有两个轴以上的张量没有特殊的数学名称。)*
 - 深度学习存储和操作数据的主要接口是张量（n维数组）。它提供了各种功能，包括基本数学运算、广 播、索引、切片、内存节省和转换其他Python对象。
 
-### 生成，访问张量
+### 生成张量
 
 #### `arrange`
 
@@ -101,6 +101,8 @@ tensor(	[[1, 2],
 
 
 
+### 访问张量
+
 #### `shape`
 
 访问张量的形状
@@ -154,7 +156,7 @@ new_tensor = tensor.reshape(2, -1) # 自动算列数
 
 
 
-### 运算符
+### 张量运算
 
 
 
@@ -704,6 +706,23 @@ x.grad == u
 # 输出：tensor([True, True, True, True])
 
 '''python控制流的自动微分'''
+def f(a):
+  b = a * 2
+  while b.norm() < 1000:
+    b = b * 2
+  if b.sum() > 0:
+    c = b
+  else:
+    c = 100 * b
+	return c
+
+a = torch.randn(size=())
+a.requires_grad_(True)
+
+d = f(a)
+d.backward()
+a.grad == d / a
+# 输出：tensor(True)
 ```
 
 
