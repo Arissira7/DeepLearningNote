@@ -847,6 +847,78 @@ true_b = 4.2
 features, labels = d2l.synthetic_data(true_w, true_b, 1000)
 
 '''读取数据集'''
+def load_array(data_arrays, batch_size, is_train=True):
+  dataset = data.TensorDataset(*data_arrays)
+  return data.DataLoader(dataset, batch_size, shuffle=is_train)
+
+batch_size = 10
+data_iter = load_array((features, labels), batch_size)
+
+next(iter(data_iter))
+'''
+[tensor([[-1.3116, -0.3062],
+[-1.5653, 0.4830],
+[-0.8893, -0.9466],
+[-1.2417, 1.6891],
+[-0.7148, 0.1376],
+[-0.2162, -0.6122],
+[ 2.4048, -0.3211],
+[-0.1516, 0.4997],
+[ 1.5298, -0.2291],
+[ 1.3895, 1.2602]]),
+tensor([[ 2.6073],
+[-0.5787],
+[ 5.6339],
+[-4.0211],
+[ 2.3117],
+[ 5.8492],
+[10.0926],
+[ 2.1932],
+[ 8.0441],
+[ 2.6943]])]
+'''
+
+'''定义模型'''
+from torch import nn
+net = nn.Sequential(nn.Linear(2, 1))
+
+'''初始化模型参数'''
+net[0].weight.data.normal_(0, 0.01)
+net[0].bias.data.fill_(0)
+'''
+tensor([0.])
+'''
+
+'''定义损失函数'''
+loss = nn.MSELoss()
+
+'''定义优化算法'''
+trainer = torch.optim.SDG(net.parameters(), lr=0.03)
+
+'''训练'''
+num_epochs = 3
+for epoch in range(num_epochs):
+  for X, y in data_iter:
+    l = loss(net(X), y)
+    trainer.zero_grad()
+    l.backward()
+    trainer.step()
+  l = loss(net(features), labels)
+  print(f'epoch{epoch + 1}, loss{l:f}')
+'''
+epoch 1, loss 0.000248
+epoch 2, loss 0.000103
+epoch 3, loss 0.000103
+'''
+  
+w = net[0].weight.data
+print('w的估计误差：', true_w - w.reshape(true_w.shape))
+b = net[0].bias.data
+print('b的估计误差：', true_b - b)
+'''
+w的估计误差： tensor([-0.0010, -0.0003])
+b的估计误差： tensor([-0.0003])
+'''
 ```
 
 
