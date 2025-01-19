@@ -890,10 +890,10 @@ tensor([0.])
 '''
 
 '''定义损失函数'''
-loss = nn.MSELoss()
+loss = nn.MSELoss() # 均方误差
 
 '''定义优化算法'''
-trainer = torch.optim.SDG(net.parameters(), lr=0.03)
+trainer = torch.optim.SDG(net.parameters(), lr=0.03) # 梯度下降算法
 
 '''训练'''
 num_epochs = 3
@@ -903,6 +903,7 @@ for epoch in range(num_epochs):
     trainer.zero_grad()
     l.backward()
     trainer.step()
+    
   l = loss(net(features), labels)
   print(f'epoch{epoch + 1}, loss{l:f}')
 '''
