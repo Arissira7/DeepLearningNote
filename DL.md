@@ -926,9 +926,12 @@ b的估计误差： tensor([-0.0003])
 
 ## Softmax回归
 
+Softmax回归是**分类问题**
 
+- 回归估计一个连续值
+- 分类预测一个离散类别
 
-
+![Screenshot 2025-01-21 at 17.41.42](/Users/aris/Library/Application Support/typora-user-images/Screenshot 2025-01-21 at 17.41.42.png)
 
 
 
