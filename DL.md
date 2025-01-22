@@ -1254,3 +1254,8 @@ predict_ch3(net, test_iter)
 
 
 ## softmax回归的简洁实现
+
+
+
+ 
+
