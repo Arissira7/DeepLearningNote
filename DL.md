@@ -992,11 +992,17 @@ $$j\ 是指该样本的某一个类别是\ j$$
 
 
 
-**4. 对损失计算梯度**
+**4. 对损失计算梯度并使用优化算法**
 
 相当于降低 预测是某种类别后结果真的是该类别的惊异 即 随着 w 和 b 的不断优化，预测概率会越来越准，最后达到有较高预测准确率的效果
 
-![Screenshot 2025-01-22 at 06.31.21](/Users/aris/Library/Application Support/typora-user-images/Screenshot 2025-01-22 at 06.31.21.png)
+- 计算梯度：
+
+![Screenshot 2025-01-22 at 21.31.19](/Users/aris/Library/Application Support/typora-user-images/Screenshot 2025-01-22 at 21.31.19.png)
+
+- 使用优化算法（如梯度下降算法）
+
+  得到新的 w和 b 后重新计算预测概率，如此循环直到得到一个预测率高的模型
 
 
 
