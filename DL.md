@@ -974,6 +974,8 @@ $$j\ 是指该样本的某一个类别是\ j$$
 
 后续不断更新 w 和 b 的值，会使得 $\hat y$ 的值越来越准确。当 $\hat y = y$ 时，交叉熵降为信息熵，且损失函数为0
 
+感性理解：我们预先知道真实的 $y$ ，而 $$l(y, \hat y)$$ 就描述了我们看到 $\hat y$ 时会产生的惊讶。只有当 $\hat y = y$ 时，损失函数为0，我们就不会有惊讶产生了
+
 
 
 补充：
@@ -1047,6 +1049,38 @@ $$H[P] = \sum_j - P(j) \log P(j).$$
 交叉熵从 $P$ 到 $Q$，记为 $H(P, Q)$。
 
 我们可以把交叉熵想象为“主观概率为$Q$的观察者在看到根据概率$P$生成的数据时的预期惊异”。当$P=Q$时，交叉熵达到最低。在这种情况下，从$P$到$Q$的交叉熵是$H(P, P)= H(P)$。**简而言之，我们可以从两方面来考虑交叉熵分类目标：（i）最大化观测数据的似然；（ii）最小化传达标签所需的惊异。**
+
+
+
+## 图像分类数据集
+
+```python
+import torch
+import torchvision
+from torch.utils import data
+from torchvision import transforms
+from d2l import torch as d2l
+
+d2l.use_svg_display()
+
+'''将Fashion‐MNIST数据集下载并读取到内存中'''
+def load_data_fashion_mnist(batch_size, resize=None): 
+  trans = [transforms.ToTensor()]
+  if resize:
+    trans.insert(0, transforms.Resize(resize))
+  trans = transforms.Compose(trans)
+	mnist_train = torchvision.datasets.FashionMNIST(
+root="../data", train=True, transform=trans, download=True)
+	mnist_test = torchvision.datasets.FashionMNIST(
+root="../data", train=False, transform=trans, download=True)
+	return (data.DataLoader(mnist_train, batch_size, shuffle=True,
+num_workers=get_dataloader_workers()),
+data.DataLoader(mnist_test, batch_size, shuffle=False,
+num_workers=get_dataloader_workers()))
+
+```
+
+
 
 
 
