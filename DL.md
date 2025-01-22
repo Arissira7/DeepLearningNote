@@ -1064,7 +1064,11 @@ from d2l import torch as d2l
 
 d2l.use_svg_display()
 
-'''将Fashion‐MNIST数据集下载并读取到内存中'''
+'''
+图像分类数据集的读取：
+	将Fashion‐MNIST数据集下载并读取到内存中
+'''
+
 def load_data_fashion_mnist(batch_size, resize=None): 
   trans = [transforms.ToTensor()]
   if resize:
