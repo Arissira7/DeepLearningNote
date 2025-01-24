@@ -1256,8 +1256,29 @@ predict_ch3(net, test_iter)
 ## softmax回归的简洁实现
 
 ```python
+# PyTorch不会隐式地调整输入的形状。因此，
+# 我们在线性层前定义了展平层（flatten），来调整网络输入的形状
+net = nn.Sequential(nn.Flatten(), nn.Linear(784, 10))
+def init_weights(m):
+  if type(m) == nn.Linear:
+    nn.init.normal_(m.weight, std=0.01)
 
+net.apply(init_weights);
+
+'''损失函数'''
+loss = nn.CrossEntropyLoss(reduction='none')
+
+'''优化算法'''
+trainer = torch.optim.SGD(net.parameters(), lr=0.1)
+
+'''训练'''
+num_epochs = 10
+d2l.train_ch3(net, train_iter, test_iter, loss, num_epochs, trainer)
 ```
+
+
+
+# 多层感知机
 
 
 
