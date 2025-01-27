@@ -1142,24 +1142,25 @@ def evaluate_accuracy(net, data_iter):
 def train_epoch_ch3(net, train_iter, loss, updater): 
 	if isinstance(net, torch.nn.Module):
 		net.train() # 将模型设置为训练模式
-# 训练损失总和、训练准确度总和、样本数
-metric = Accumulator(3)
-for X, y in train_iter:
-	# 计算梯度并更新参数
-	y_hat = net(X)
-	l = loss(y_hat, y)
-	if isinstance(updater, torch.optim.Optimizer):
-		# 使用PyTorch内置的优化器和损失函数
-		updater.zero_grad()
-		l.mean().backward()
-		updater.step()
-	else:
-		# 使用定制的优化器和损失函数
-		l.sum().backward()
-		updater(X.shape[0])
-	metric.add(float(l.sum()), accuracy(y_hat, y), y.numel())
-# 返回训练损失和训练精度
-return metric[0] / metric[2], metric[1] / metric[2]
+	
+  metric = Accumulator(3) # 1:训练损失总和、2:训练准确度总和、3:样本总数
+	
+  # 计算梯度并更新参数：w, b
+  for X, y in train_iter:
+		y_hat = net(X)
+		l = loss(y_hat, y)
+		if isinstance(updater, torch.optim.Optimizer):
+			# 使用PyTorch内置的优化器和损失函数
+			updater.zero_grad()
+			l.mean().backward()
+			updater.step()
+		else:
+			# 使用定制的优化器和损失函数
+			l.sum().backward()
+			updater(X.shape[0])
+		metric.add(float(l.sum()), accuracy(y_hat, y), y.numel())
+
+	return metric[0] / metric[2], metric[1] / metric[2] # 返回训练损失和训练精度
   
 class Animator: 
 """在动画中绘制数据"""
