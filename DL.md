@@ -1104,8 +1104,6 @@ def softmax(X):
 	X_exp = torch.exp(X)
 	partition = X_exp.sum(1, keepdim=True)
 	return X_exp / partition # 这里应用了广播机制
-X = torch.normal(0, 1, (2, 5))
-X_prob = softmax(X)
 
 '''定义模型'''
 def net(X):
