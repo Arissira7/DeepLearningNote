@@ -1086,10 +1086,11 @@ root="../data", train=False, transform=trans, download=True)
 data.DataLoader(mnist_test, batch_size, shuffle=False,
 num_workers=get_dataloader_workers()))
 
+'''实现起点'''
 batch_size = 256
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
 
-'''初始化模型参数'''
+'''初始化模型参数w,b'''
 num_inputs = 784
 num_outputs = 10
 W = torch.normal(0, 0.01, size=(num_inputs, num_outputs), requires_grad=True)
@@ -1105,7 +1106,6 @@ def softmax(X):
 	return X_exp / partition # 这里应用了广播机制
 X = torch.normal(0, 1, (2, 5))
 X_prob = softmax(X)
-X_prob, X_prob.sum(1)
 
 '''定义模型'''
 def net(X):
