@@ -1113,17 +1113,14 @@ def net(X):
 def cross_entropy(y_hat, y):
 	return - torch.log(y_hat[range(len(y_hat)), y]) # 花式索引技巧
 
-'''分类精度'''
+'''分类精度（计算预测正确的数量）'''
 def accuracy(y_hat, y): 
-"""计算预测正确的数量"""
 	if len(y_hat.shape) > 1 and y_hat.shape[1] > 1:
 		y_hat = y_hat.argmax(axis=1)
 	cmp = y_hat.type(y.dtype) == y
-	return float(cmp.type(y.dtype).sum())
+	return float(cmp.sum())
 
-accuracy(y_hat, y) / len(y)
-
-def evaluate_accuracy(net, data_iter): #@save
+def evaluate_accuracy(net, data_iter): 
 """计算在指定数据集上模型的精度"""
 	if isinstance(net, torch.nn.Module):
 		net.eval() # 将模型设置为评估模式
@@ -1144,6 +1141,7 @@ class Accumulator:
 	def __getitem__(self, idx):
 		return self.data[idx]
   evaluate_accuracy(net, test_iter)
+  
   
 '''训练'''
 def train_epoch_ch3(net, train_iter, loss, updater): 
