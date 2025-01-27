@@ -1160,11 +1160,11 @@ def train_epoch_ch3(net, train_iter, loss, updater):
 			l.sum().backward()
 			updater(X.shape[0]) # X.shape[0]是获取当前训练批次的样本数量，并对模型参数进行更新
       
-		metric.add(float(l.sum()), accuracy(y_hat, y), y.numel())
-	return metric[0] / metric[2], metric[1] / metric[2] # 返回训练损失和训练精度
+  	metric.add(float(l.sum()), accuracy(y_hat, y), y.numel())
+  return metric[0] / metric[2], metric[1] / metric[2] # 返回训练损失和训练精度
   
+"""在动画中绘制数据（可不必细究）"""
 class Animator: 
-"""在动画中绘制数据"""
 	def __init__(self, xlabel=None, ylabel=None, legend=None, xlim=None, 
 ylim=None, xscale='linear', yscale='linear', 
 fmts=('-', 'm--', 'g-.', 'r:'), nrows=1, ncols=1, 
@@ -1206,7 +1206,8 @@ def add(self, x, y):
 def train_ch3(net, train_iter, test_iter, loss, num_epochs, updater): 
 """训练模型（定义见第3章）"""
 	animator = Animator(xlabel='epoch', xlim=[1, num_epochs], ylim=[0.3, 0.9], 
-legend=['train loss', 'train acc', 'test acc'])
+legend=['train loss', 'train acc', 'test acc']) # 可不用理解细节
+  
 	for epoch in range(num_epochs):
 		train_metrics = train_epoch_ch3(net, train_iter, loss, updater)
 		test_acc = evaluate_accuracy(net, test_iter)
