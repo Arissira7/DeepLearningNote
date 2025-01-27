@@ -1113,8 +1113,6 @@ def net(X):
 def cross_entropy(y_hat, y):
 	return - torch.log(y_hat[range(len(y_hat)), y]) # 花式索引技巧
 
-cross_entropy(y_hat, y)
-
 '''分类精度'''
 def accuracy(y_hat, y): 
 """计算预测正确的数量"""
