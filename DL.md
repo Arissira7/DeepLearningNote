@@ -1081,7 +1081,7 @@ root="../data", train=True, transform=trans, download=True)
 root="../data", train=False, transform=trans, download=True)
 	
   return (data.DataLoader(mnist_train, batch_size, shuffle=True, num_workers=get_dataloader_workers()),
-data.DataLoader(mnist_test, batch_size, shuffle=False,
+					data.DataLoader(mnist_test, batch_size, shuffle=False,
 num_workers=get_dataloader_workers()))
 
 '''实现起点'''
@@ -1149,17 +1149,18 @@ def train_epoch_ch3(net, train_iter, loss, updater):
   for X, y in train_iter:
 		y_hat = net(X)
 		l = loss(y_hat, y)
+    
 		if isinstance(updater, torch.optim.Optimizer):
 			# 使用PyTorch内置的优化器和损失函数
 			updater.zero_grad()
 			l.mean().backward()
-			updater.step()
+			updater.step() # step() 方法会根据优化器中定义的优化算法和学习率，对模型参数进行更新
 		else:
 			# 使用定制的优化器和损失函数
 			l.sum().backward()
-			updater(X.shape[0])
+			updater(X.shape[0]) # X.shape[0]是获取当前训练批次的样本数量，并对模型参数进行更新
+      
 		metric.add(float(l.sum()), accuracy(y_hat, y), y.numel())
-
 	return metric[0] / metric[2], metric[1] / metric[2] # 返回训练损失和训练精度
   
 class Animator: 
