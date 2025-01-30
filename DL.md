@@ -1084,7 +1084,7 @@ root="../data", train=False, transform=trans, download=True)
 					data.DataLoader(mnist_test, batch_size, shuffle=False,
 num_workers=get_dataloader_workers()))
 
-'''实现起点'''
+'''数据准备'''
 batch_size = 256
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
 
